@@ -11,7 +11,8 @@ export default {
       query: "",
       gifs: [],
       erros: [],
-      loading: false
+      loading: false,
+      queryCounter: 8
     };
   },
   components: {
@@ -19,14 +20,17 @@ export default {
     Spinner
   },
   methods: {
-    changeHandle: function(e) {
-      e.preventDefault();
+    changeHandle: function(e, bool) {
+      if ( e !== undefined ){
+        e.preventDefault();
+        this.queryCounter = 8;
+      }
       this.loading = true;
       this.gifs = [];
 
       axios
         .get(
-          `https://api.giphy.com/v1/gifs/search?api_key=GQFWqxR0ulxqek3YGvXMIOUwMhUpzaX3&q=${this.filterQuery(
+          `https://api.giphy.com/v1/gifs/search?api_key=GQFWqxR0ulxqek3YGvXMIOUwMhUpzaX3&limit=${this.queryCounter}&q=${this.filterQuery(
             this.query
           )}`
         )
@@ -37,7 +41,8 @@ export default {
             let store = {
               url: item.images.original.url,
               embed: item.embed_url,
-              title: item.title
+              title: item.title,
+              id: item.id
             };
             this.gifs.push(store);
           });
@@ -56,12 +61,16 @@ export default {
       if (!typeof string == "string" || string.length < 3) return;
       string = string.replace(" ", "-").toLowerCase();
       return string;
+    },
+    handleQueryCount: function(){
+      this.queryCounter += 8;
+      this.changeHandle();
     }
   },
   computed: {
     love() {
-      return this.$store.state.love
-    },
+      return this.$store.state.love;
+    }
   }
 };
 </script>
@@ -101,14 +110,13 @@ export default {
       </div>
     </div>
     <Spinner v-if="loading" />
-    
+
     <div v-if="!!gifs.length">
-      <Searcher :gifs="gifs" />
+      <Searcher :gifs="gifs" :handleQueryCount="handleQueryCount" />
     </div>
     <div v-else id="oh-oh">
       <h3>Listagem de memes vazia!</h3>
     </div>
-
   </div>
 </template>
 

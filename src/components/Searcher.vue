@@ -1,14 +1,50 @@
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: "Searcher",
   props: {
     gifs: Promise,
+    handleQueryCount: { type: Function }
   },
   methods: {
     getImage: function(elem) {
       return elem.url;
-    }
+    },
+    gif_add: function(event){
+      let self, parent;
+      
+      self = event.target;
+      
+      parent = self;
+      while( !parent.classList.contains('wrap') ){
+        parent = parent.parentNode
+      }
+      
+      const list = {
+        image: parent.getAttribute('img'),
+        title: parent.getAttribute('title'),
+        embed: parent.getAttribute('embed'),
+        id: parent.getAttribute('data-id'),
+        likes: 0,
+      }
+
+      this.increment(list);
+      
+    },
+    handleClick: function(e){
+      e.preventDefault()
+      this.handleQueryCount()
+    },
+    ...mapMutations([
+      'increment',
+    ])
   },
+  computed: {
+    loves(){
+      return store.state.love
+    }
+  }
 };
 </script>
 
@@ -17,10 +53,10 @@ export default {
     <div class="container" id="repeat">
       <div class="grid">
         <div class="column" v-for="gif in gifs">
-          <div class="wrap" :style="{'backgroundImage':'url('+ getImage(gif) +')'}">
+          <div class="wrap" :style="{'backgroundImage':'url('+ getImage(gif) +')'}" :title="gif.title" :embed="gif.embed" :img="gif.url" :data-id="gif.id">
             <ul class="icons">
               <li>
-                <img src="../assets/heart.png" alt="loved" />
+                <img src="../assets/heart.png" alt="loved" v-on:click="gif_add" />
               </li>
               <li>
                 <img src="../assets/copy.png" alt="embed" />
@@ -31,6 +67,9 @@ export default {
             </ul>
           </div>
         </div>
+      </div>
+      <div class="loadmore" @click="handleClick">
+        <a href="#" class="btn btn-primary">Carregar mais</a>
       </div>
     </div>
   </div>
@@ -111,6 +150,22 @@ export default {
         }
       }
     }
+  }
+}
+
+.loadmore {
+  padding: 0 0 $spacer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    background: $primary;
+    padding: 10px 25px;
+    border-radius: 60px;
+    display: inline-block;
+    color: #fff;
+    font-weight: 600;
   }
 }
 </style>
