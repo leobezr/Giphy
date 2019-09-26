@@ -1,4 +1,6 @@
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: "Searcher",
   props: {
@@ -22,11 +24,15 @@ export default {
         image: parent.getAttribute('img'),
         title: parent.getAttribute('title'),
         embed: parent.getAttribute('embed'),
-        id: parent.getAttribute('data-id')
+        id: parent.getAttribute('data-id'),
+        likes: 0,
       }
 
-      console.log(list);
-    }
+      this.increment(list)
+    },
+    ...mapMutations([
+      'increment',
+    ])
   },
   computed: {
     loves(){

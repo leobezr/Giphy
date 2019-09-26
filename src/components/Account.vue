@@ -1,19 +1,18 @@
 <script>
 import "../scss/account.scss";
+import { store } from "../../store/index";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Account",
   computed: {
-    love() {
-      return this.$store.state.love;
-    }
+    ...mapState({
+      love: state => state.love
+    })
   },
   props: {
     open: Boolean,
     setModalStates: { type: Function }
-  },
-  mounted() {
-    this.$emit("setModalStates", false);
   },
   data() {
     return {
@@ -30,7 +29,8 @@ export default {
         status: "LOGGED_OUT"
       },
       error: false,
-      launch: false
+      launch: false,
+      selectable: []
     };
   },
   methods: {
@@ -71,7 +71,22 @@ export default {
     },
     setLauncher(bool) {
       this.launch = bool;
-    }
+    },
+    selectedGif(e) {
+      let self, ID, parent;
+
+      self = e.target;
+      ID = self.getAttribute('data-id');
+
+      if ( this.selectable.includes(ID) ) return
+      this.selectable.push(ID);
+    },
+    handleRemove() {
+      this.remove(this.selectable)
+    },
+    ...mapMutations([
+      'remove'
+    ])
   }
 };
 </script>
@@ -164,26 +179,42 @@ export default {
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row>
+                <sui-table-row v-for="arr in love">
                   <sui-table-cell collapsing>
-                    <sui-checkbox toggle />
+                    <div class="ui fitted toggle checkbox" data-id="Y4pAQv58ETJgRwoLxj">
+                      <input
+                        readonly="readonly"
+                        @change="selectedGif"
+                        :data-id="arr.id"
+                        tabindex="0"
+                        type="checkbox"
+                      />
+                      <label></label>
+                    </div>
                   </sui-table-cell>
-                  <sui-table-cell>John Lilki</sui-table-cell>
-                  <sui-table-cell>Imagem</sui-table-cell>
+                  <sui-table-cell>{{arr.title}}</sui-table-cell>
                   <sui-table-cell>
-                    <sui-icon name="share alternate" disabled />
+                    <figure class="isolador">
+                      <img :src="arr.image" alt="arr.title" />
+                    </figure>
                   </sui-table-cell>
-                  <sui-table-cell>15</sui-table-cell>
+                  <sui-table-cell>
+                    <span :href="arr.embed">
+                      <sui-icon name="share alternate" disabled />
+                    </span>
+                  </sui-table-cell>
+                  <sui-table-cell>{{arr.likes}}</sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
             <div class="sidebar">
-              <p>0 itens selecionados</p>
+              <p v-if="selectable.length === 0">0 itens selected</p>
+              <p v-else>{{selectable.length}} iten selected</p>
               <a href="#" class="btn btn-primary">Share</a>
               <ul>
                 <li>
-                  <span>
-                    <sui-icon name="trash alternate outline" disabled />Deletar
+                  <span @click="handleRemove">
+                    <sui-icon name="trash alternate outline" />Deletar
                   </span>
                 </li>
               </ul>

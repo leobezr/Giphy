@@ -42,7 +42,7 @@
       justify-content: center;
       align-items: center;
 
-      & > span {
+      &>span {
         width: 100%;
         height: 2px;
         background: #fff;
@@ -67,7 +67,7 @@
       }
 
       &:hover {
-        & > span {
+        &>span {
           transform: rotate(35deg);
 
           &:before {
@@ -149,7 +149,7 @@
             }
           }
 
-          & > div {
+          &>div {
             width: 100%;
 
             input {
@@ -233,12 +233,13 @@
         }
       }
     }
+
     .body {
       display: grid;
       grid-template-columns: 15% 1fr;
       height: 100%;
 
-      & > .column {
+      &>.column {
         &:first-child {
           padding: 2em;
           background: #f7f9fa;
@@ -308,14 +309,37 @@
             display: grid;
             grid-template-columns: 80% 1fr;
             margin-top: 20px;
+            height: 680px;
+            overflow: auto;
 
             .checkbox {
-                
-                input:checked ~ label {
-                    &:before {
-                        background-color: $primary $i;
-                    }
+
+              input:checked~label {
+                &:before {
+                  background-color: $primary $i;
                 }
+              }
+            }
+
+            table {
+              // max-height: 680px;
+              // overflow: auto;
+              // display: block;
+
+              figure {
+                display: flex;
+                width: 100px;
+                height: 100px;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                margin: 0 auto;
+
+                img {
+                  width: 100%;
+                  height: auto;
+                }
+              }
             }
 
             .sidebar {
@@ -323,7 +347,7 @@
               color: $color;
               display: flex;
               flex-direction: column;
-              justify-content: center;
+              justify-content: flex-start;
               align-items: center;
 
               p {
@@ -345,7 +369,7 @@
                   width: 50%;
                   height: 1px;
                   background: #dee4e8;
-                  display:block;
+                  display: block;
                   margin: 10px auto;
                 }
 
@@ -358,18 +382,19 @@
                   }
                 }
               }
-                  a {
-                    display: block;
-                    padding: 10px 0;
-                    background: $primary;
-                    color: #fff;
-                    text-align: center;
-                    border-radius: 40px;
-                    margin: 5px 0;
-                    width: 100%;
-                  }
 
-              
+              a {
+                display: block;
+                padding: 10px 0;
+                background: $primary;
+                color: #fff;
+                text-align: center;
+                border-radius: 40px;
+                margin: 5px 0;
+                width: 100%;
+              }
+
+
             }
           }
         }
@@ -382,12 +407,15 @@
   0% {
     transform: translate(0, 0);
   }
+
   50% {
     transform: translate(-20%, 0);
   }
+
   70% {
     transform: translate(100vw, 0);
   }
+
   100% {
     transform: translate(100vw, 0);
     opacity: 0;
