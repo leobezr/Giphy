@@ -1,3 +1,65 @@
+<script>
+export default {
+  name: "Searcher",
+  props: {
+    gifs: Promise,
+  },
+  methods: {
+    getImage: function(elem) {
+      return elem.url;
+    },
+    gif_add: function(event){
+      let self, parent;
+      
+      self = event.target;
+      
+      parent = self;
+      while( !parent.classList.contains('wrap') ){
+        parent = parent.parentNode
+      }
+      
+      const list = {
+        image: parent.getAttribute('img'),
+        title: parent.getAttribute('title'),
+        embed: parent.getAttribute('embed'),
+        id: parent.getAttribute('data-id')
+      }
+
+      console.log(list);
+    }
+  },
+  computed: {
+    loves(){
+      return store.state.love
+    }
+  }
+};
+</script>
+
+<template>
+  <div>
+    <div class="container" id="repeat">
+      <div class="grid">
+        <div class="column" v-for="gif in gifs">
+          <div class="wrap" :style="{'backgroundImage':'url('+ getImage(gif) +')'}" :title="gif.title" :embed="gif.embed" :img="gif.url" :data-id="gif.id">
+            <ul class="icons">
+              <li>
+                <img src="../assets/heart.png" alt="loved" v-on:click="gif_add" />
+              </li>
+              <li>
+                <img src="../assets/copy.png" alt="embed" />
+              </li>
+              <li>
+                <img src="../assets/like.png" alt="like" />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style lang="scss">
 @import "../scss/main.scss";
 
@@ -76,41 +138,3 @@
   }
 }
 </style>
-
-<template>
-  <div>
-    <div class="container" id="repeat">
-      <div class="grid">
-        <div class="column" v-for="gif in gifs">
-          <div class="wrap" :style="{'backgroundImage':'url('+ getImage(gif) +')'}">
-            <ul class="icons">
-              <li>
-                <img src="../assets/heart.png" alt="loved" />
-              </li>
-              <li>
-                <img src="../assets/copy.png" alt="embed" />
-              </li>
-              <li>
-                <img src="../assets/like.png" alt="like" />
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: "Searcher",
-  props: {
-    gifs: Promise,
-  },
-  methods: {
-    getImage: function(elem) {
-      return elem.url;
-    }
-  },
-};
-</script>

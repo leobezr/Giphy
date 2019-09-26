@@ -1,4 +1,6 @@
 <script>
+import "../scss/account.scss";
+
 export default {
   name: "Account",
   computed: {
@@ -7,7 +9,11 @@ export default {
     }
   },
   props: {
-    open
+    open: Boolean,
+    setModalStates: { type: Function }
+  },
+  mounted() {
+    this.$emit("setModalStates", false);
   },
   data() {
     return {
@@ -23,13 +29,14 @@ export default {
         pass: "",
         status: "LOGGED_OUT"
       },
-      error: false
+      error: false,
+      launch: false
     };
   },
   methods: {
     handleLogin(e) {
       e.preventDefault();
-      let username, password, pass, account, setError, setAuth;
+      let username, password, pass, account, setError, setAuth, setLaunch;
 
       username = this.user[0].username;
       password = this.user[0].password;
@@ -39,14 +46,17 @@ export default {
 
       setError = arg => this.setErrorStatus(arg);
       setAuth = arg => this.setOAuth(arg);
+      setLaunch = bool => this.setLauncher(bool);
 
       setTimeout(function() {
         if (username === account && password === pass) {
           setError(false);
           setAuth("LOGGED_IN");
+          setLaunch(true);
         } else {
           setError(true);
           setAuth("LOGGED_OUT");
+          setLaunch(false);
         }
       }, 200);
     },
@@ -58,16 +68,20 @@ export default {
     },
     setOAuth(status) {
       this.oauth.status = status;
+    },
+    setLauncher(bool) {
+      this.launch = bool;
     }
   }
 };
 </script>
 
-<template v-if="open">
-  <div id="myAccount">
-    <div class="menu">
+<template>
+  <div id="myAccount" v-if="open">
+    <div class="curtain" v-on:click="setModalStates"></div>
+    <div class="menu" :class="launch ? 'launch' : 'static'">
       <div class="grid">
-        <span class="closer">
+        <span class="closer" v-on:click="setModalStates">
           <span></span>
         </span>
         <div class="account">
@@ -92,171 +106,91 @@ export default {
         </div>
       </div>
     </div>
+
+    <div class="folder" :class="launch && oauth.status === 'LOGGED_IN' ? 'show' : 'dont'">
+      <div class="header">
+        <span v-on:click="setModalStates"></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="body">
+        <div class="column">
+          <h3>
+            My
+            <strong>GIFs</strong>
+          </h3>
+          <ul>
+            <li>
+              <a href="#">GIFs Favoritos</a>
+            </li>
+            <li>
+              <a href="#">Likes</a>
+            </li>
+            <li>
+              <a href="#">Todos</a>
+            </li>
+            <li>
+              <a href="#">Portfólio</a>
+            </li>
+            <li>
+              <a href="#">Github</a>
+            </li>
+            <li>
+              <a href="#">Fork</a>
+            </li>
+            <li>
+              <a href="#">Sair</a>
+            </li>
+          </ul>
+        </div>
+        <div class="column">
+          <div class="topbar">
+            <h3>Seus GIFs prediletos</h3>
+            <div class="ui left icon action input">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Nome do GIF" />
+              <div class="ui primary submit button">Search</div>
+            </div>
+          </div>
+          <div class="contain-table">
+            <sui-table compact celled definition>
+              <sui-table-header full-width>
+                <sui-table-row>
+                  <sui-table-header-cell />
+                  <sui-table-header-cell>Título</sui-table-header-cell>
+                  <sui-table-header-cell>Imagem</sui-table-header-cell>
+                  <sui-table-header-cell>Embed</sui-table-header-cell>
+                  <sui-table-header-cell>Likes</sui-table-header-cell>
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row>
+                  <sui-table-cell collapsing>
+                    <sui-checkbox toggle />
+                  </sui-table-cell>
+                  <sui-table-cell>John Lilki</sui-table-cell>
+                  <sui-table-cell>Imagem</sui-table-cell>
+                  <sui-table-cell>
+                    <sui-icon name="share alternate" disabled />
+                  </sui-table-cell>
+                  <sui-table-cell>15</sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+            <div class="sidebar">
+              <p>0 itens selecionados</p>
+              <a href="#" class="btn btn-primary">Share</a>
+              <ul>
+                <li>
+                  <span>
+                    <sui-icon name="trash alternate outline" disabled />Deletar
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-
-<style lang="scss">
-@import "../scss/main.scss";
-
-#myAccount {
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 1010;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100vw;
-  height: 100vh;
-
-  .menu {
-    background: $primary;
-    width: 50vw;
-    height: 100%;
-    padding: 2em;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    .closer {
-      width: 40px;
-      height: 40px;
-      position: relative;
-      display: flex;
-      cursor: pointer;
-      justify-content: center;
-      align-items: center;
-
-      & > span {
-        width: 100%;
-        height: 2px;
-        background: #fff;
-        display: block;
-        transform: rotate(45deg);
-        position: relative;
-        pointer-events: none;
-        transition: all 300ms ease;
-
-        &:before {
-          content: "";
-          width: 100%;
-          height: 2px;
-          background: #fff;
-          display: block;
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          transform: rotate(90deg);
-          transition: all 300ms ease;
-        }
-      }
-
-      &:hover {
-        & > span {
-          transform: rotate(35deg);
-
-          &:before {
-            transform: rotate(110deg);
-          }
-        }
-      }
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: calc(2em + 20px) 1fr;
-      height: 100%;
-
-      .account {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        .content {
-          width: 100%;
-          display: block;
-          max-width: 550px;
-          margin: 0 auto;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          h2 {
-            text-align: center;
-            margin: 0 0 40px;
-          }
-
-          img {
-            display: block;
-            margin: 0 auto 20px;
-          }
-        }
-
-        form {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-
-          .controllers {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-
-            input {
-              display: flex;
-              flex: 2 2;
-              padding: 5px 40px;
-              text-align: center;
-              cursor: pointer;
-              background: $primaryHot;
-              color: #fff;
-              border: none;
-              font-weight: 600;
-              font-family: inherit;
-              margin-top: 30px;
-              justify-content: center;
-              align-items: center;
-
-              &.create {
-                background: none $i;
-                border: solid 1px $primaryHot $i;
-                flex: 1 1;
-              }
-
-              &:not(.create) {
-                margin-right: 10px;
-              }
-            }
-          }
-
-          & > div {
-            width: 100%;
-
-            input {
-              width: 100%;
-              display: block;
-              margin-bottom: 10px;
-
-              i {
-                color: $primary;
-              }
-            }
-          }
-
-          input {
-            height: 40px;
-            border-radius: 60px;
-          }
-
-          .error {
-            margin-top: 10px;
-          }
-        }
-      }
-    }
-  }
-}
-</style>

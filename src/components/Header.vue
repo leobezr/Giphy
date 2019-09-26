@@ -9,6 +9,16 @@ export default {
   components: {
     Account
   },
+  methods: {
+    setModalStates(e){
+      event.preventDefault();
+      this.open = this.open === true ? false : true;
+    },
+    summonMenu(e){
+      e.preventDefault();
+      this.open = true;
+    }
+  },
   data(){
     return {
       open: false,
@@ -33,7 +43,7 @@ export default {
           <a href="#">Pesquisar</a>
         </li>
         <li>
-          <a href="#">
+          <a href="#" v-on:click="setModalStates">
             Meus
             <strong>GIFs</strong>
           </a>
@@ -52,7 +62,7 @@ export default {
         </li>
       </ul>
     </div>
-    <Account :open="open"/>
+    <Account :open="open" :setModalStates="setModalStates"/>
   </div>
 </template>
 

@@ -26,7 +26,7 @@ export default {
 
       axios
         .get(
-          `https://api.giphy.com/v1/gifs/search?api_key=GQFWqxR0ulxqek3YGvXMIOUwMhUpzaX3&q=${this.filterQuery(
+          `https://api.giphy.com/v1/gifs/search?api_key=GQFWqxR0ulxqek3YGvXMIOUwMhUpzaX3&limit=50&q=${this.filterQuery(
             this.query
           )}`
         )
@@ -37,7 +37,8 @@ export default {
             let store = {
               url: item.images.original.url,
               embed: item.embed_url,
-              title: item.title
+              title: item.title,
+              id: item.id
             };
             this.gifs.push(store);
           });
@@ -60,8 +61,8 @@ export default {
   },
   computed: {
     love() {
-      return this.$store.state.love
-    },
+      return this.$store.state.love;
+    }
   }
 };
 </script>
@@ -101,14 +102,13 @@ export default {
       </div>
     </div>
     <Spinner v-if="loading" />
-    
+
     <div v-if="!!gifs.length">
       <Searcher :gifs="gifs" />
     </div>
     <div v-else id="oh-oh">
       <h3>Listagem de memes vazia!</h3>
     </div>
-
   </div>
 </template>
 
