@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     changeHandle: function(e, bool) {
-      if ( e.target !== undefined ){
+      if ( e !== undefined ){
         e.preventDefault();
         this.queryCounter = 8;
       }
@@ -64,6 +64,7 @@ export default {
     },
     handleQueryCount: function(){
       this.queryCounter += 8;
+      this.changeHandle();
     }
   },
   computed: {
