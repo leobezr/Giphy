@@ -3,6 +3,11 @@ import { mapMutations } from 'vuex';
 
 export default {
   name: "Searcher",
+  data(){
+    return{
+      visible: true,
+    }
+  },
   props: {
     gifs: Promise,
     handleQueryCount: { type: Function }
@@ -30,11 +35,17 @@ export default {
       }
 
       this.increment(list);
-      
+      this.visible = true;
+      setTimeout(() => {
+        this.visible = false;
+      }, 5000);
     },
     handleClick: function(e){
       e.preventDefault()
       this.handleQueryCount()
+    },
+    handleDismiss() {
+      this.visible = false;
     },
     ...mapMutations([
       'increment',
@@ -44,7 +55,7 @@ export default {
     loves(){
       return store.state.love
     }
-  }
+  },
 };
 </script>
 
@@ -72,6 +83,17 @@ export default {
         <a href="#" class="btn btn-primary">Carregar mais</a>
       </div>
     </div>
+
+    <transition name="fade">
+      <sui-message
+        v-if="visible"
+        header="GIF Adicionado!"
+        content="Agora você pode gerenciar seus GIFs, é só fazer o login."
+        dismissable
+        @dismiss="handleDismiss"
+      />
+    </transition>
+
   </div>
 </template>
 
@@ -167,5 +189,20 @@ export default {
     color: #fff;
     font-weight: 600;
   }
+}
+
+.ui.message {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    background: #7159c1;
+    color: #fff;
+    animation: fadeInSunshine 1s 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInSunshine {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 </style>

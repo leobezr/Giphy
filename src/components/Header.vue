@@ -40,7 +40,7 @@ export default {
           </a>
         </li>
         <li>
-          <a href="#">Pesquisar</a>
+          <a href="#" title="Ainda não implementado">Pesquisar</a>
         </li>
         <li>
           <a href="#" v-on:click="setModalStates">
@@ -56,7 +56,7 @@ export default {
           </a>
         </li>
         <li>
-          <a href="https://github.com/leobezr" target="_blank" rel="nofollow">
+          <a href="https://github.com/leobezr/Giphy" target="_blank" rel="nofollow">
             <img src="../assets/github.png" alt="Github" />
           </a>
         </li>
