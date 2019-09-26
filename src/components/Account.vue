@@ -73,16 +73,22 @@ export default {
       this.launch = bool;
     },
     selectedGif(e) {
-      let self, ID, parent;
+      let self, ID, parent, bool;
 
       self = e.target;
+      bool = self.checked;
       ID = self.getAttribute('data-id');
 
-      if ( this.selectable.includes(ID) ) return
-      this.selectable.push(ID);
+      if ( !this.selectable.includes(ID) && !!bool ) {
+        this.selectable.push(ID);
+      } else {
+        let count = this.selectable.indexOf(ID)
+        this.selectable.splice(ID, 1);
+      }
     },
     handleRemove() {
       this.remove(this.selectable)
+      this.selectable = [];
     },
     ...mapMutations([
       'remove'

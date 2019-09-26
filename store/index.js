@@ -30,24 +30,21 @@ export const store = new Vuex.Store({
             state.love = [];
         },
         remove(state, arr) {
-            state.love.map((item, i) => {
-                let ID, singleID;
+            arr.map((item, i) => {
+                let ID, singleID, harnestID = [];
 
-                singleID = item.id;
-                for (let x = 0; x < arr.length; x++) {
-                    let key = arr[x];
-                    ID =
-                        key === singleID
-                            ? key
-                            : false
-
-                    if (!!ID) {debugger
-                        break
-                    }
+                singleID = item;
+                for (let x = 0; x < state.love.length; x++){
+                    harnestID.push(state.love[x].id);
                 }
 
-                if (!ID) return
-                state.love = state.love.splice(i, 1);
+                for (let x = 0; x < state.love.length; x++) {
+                    let selected = state.love[x].id;
+                    if (selected === singleID) {
+                        state.love.splice(harnestID.indexOf(selected), 1);
+                        harnestID.splice(harnestID.indexOf(selected), 1);
+                    }
+                }
             })
         }
     }

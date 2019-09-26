@@ -5,6 +5,7 @@ export default {
   name: "Searcher",
   props: {
     gifs: Promise,
+    handleQueryCount: { type: Function }
   },
   methods: {
     getImage: function(elem) {
@@ -28,7 +29,12 @@ export default {
         likes: 0,
       }
 
-      this.increment(list)
+      this.increment(list);
+      
+    },
+    handleClick: function(e){
+      e.preventDefault()
+      this.handleQueryCount()
     },
     ...mapMutations([
       'increment',
@@ -61,6 +67,9 @@ export default {
             </ul>
           </div>
         </div>
+      </div>
+      <div class="loadmore" @click="handleClick">
+        <a href="#" class="btn btn-primary">Carregar mais</a>
       </div>
     </div>
   </div>
@@ -141,6 +150,22 @@ export default {
         }
       }
     }
+  }
+}
+
+.loadmore {
+  padding: 0 0 $spacer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    background: $primary;
+    padding: 10px 25px;
+    border-radius: 60px;
+    display: inline-block;
+    color: #fff;
+    font-weight: 600;
   }
 }
 </style>
