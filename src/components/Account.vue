@@ -1,5 +1,5 @@
 <script>
-import '../scss/account.scss';
+import "../scss/account.scss";
 
 export default {
   name: "Account",
@@ -177,6 +177,17 @@ export default {
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
+            <div class="sidebar">
+              <p>0 itens selecionados</p>
+              <a href="#" class="btn btn-primary">Share</a>
+              <ul>
+                <li>
+                  <span>
+                    <sui-icon name="trash alternate outline" disabled />Deletar
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

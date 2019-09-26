@@ -26,7 +26,7 @@ export default {
 
       axios
         .get(
-          `https://api.giphy.com/v1/gifs/search?api_key=GQFWqxR0ulxqek3YGvXMIOUwMhUpzaX3&q=${this.filterQuery(
+          `https://api.giphy.com/v1/gifs/search?api_key=GQFWqxR0ulxqek3YGvXMIOUwMhUpzaX3&limit=50&q=${this.filterQuery(
             this.query
           )}`
         )
