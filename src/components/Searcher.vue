@@ -1,3 +1,41 @@
+<script>
+export default {
+  name: "Searcher",
+  props: {
+    gifs: Promise,
+  },
+  methods: {
+    getImage: function(elem) {
+      return elem.url;
+    }
+  },
+};
+</script>
+
+<template>
+  <div>
+    <div class="container" id="repeat">
+      <div class="grid">
+        <div class="column" v-for="gif in gifs">
+          <div class="wrap" :style="{'backgroundImage':'url('+ getImage(gif) +')'}">
+            <ul class="icons">
+              <li>
+                <img src="../assets/heart.png" alt="loved" />
+              </li>
+              <li>
+                <img src="../assets/copy.png" alt="embed" />
+              </li>
+              <li>
+                <img src="../assets/like.png" alt="like" />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style lang="scss">
 @import "../scss/main.scss";
 
@@ -76,41 +114,3 @@
   }
 }
 </style>
-
-<template>
-  <div>
-    <div class="container" id="repeat">
-      <div class="grid">
-        <div class="column" v-for="gif in gifs">
-          <div class="wrap" :style="{'backgroundImage':'url('+ getImage(gif) +')'}">
-            <ul class="icons">
-              <li>
-                <img src="../assets/heart.png" alt="loved" />
-              </li>
-              <li>
-                <img src="../assets/copy.png" alt="embed" />
-              </li>
-              <li>
-                <img src="../assets/like.png" alt="like" />
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: "Searcher",
-  props: {
-    gifs: Promise,
-  },
-  methods: {
-    getImage: function(elem) {
-      return elem.url;
-    }
-  },
-};
-</script>
