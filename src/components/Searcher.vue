@@ -5,7 +5,7 @@ export default {
   name: "Searcher",
   data(){
     return{
-      visible: true,
+      visible: false,
     }
   },
   props: {
