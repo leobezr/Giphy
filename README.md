@@ -1,32 +1,20 @@
-# Bem-vindo Dev.
-
-## você foi designado para desenvolver um pequeno MVP.
-
-A Aliança Rebelde precisa de você. Nosso infiltrado Jar-Jar Binks bolou um plano para acabar com a ameaça de Darth
-Vader uma vez por todas. A Finxi foi contratada – por meios escusos, para não dar pinta – para fazer o Lord Sith morrer.
-De rir. Literalmente.
-
-Enquanto nosso setor de ursinhos de pelúcia é pago para produzir um trilhão de ursinhos carinhosos, sua missão é
-desenvolver um MVP para divulgação de gifs – e memes – através da API Pública do Giphy.
-
-## Requisitos do MVP
-Criação de um website utilizando o Semantic UI e Vue JS. Não será necessária a criação de um servidor backend para a
-criação dos endpoints. Consumir a API pública de desenvolvedores do Giphy para:
-* Listar gifs através de uma busca;
-* Visualizar os detalhes de um gif;
-* Scroll infinito de gifs.
-
-O backend está alocado em outro projeto, mas teremos algo salvo em nosso servidor, especialmente o nome e o link
-do gif. Crie funções para simular a comunicação com um backend que faça:
-* Salvar os gifs capazes de matar o Senhor do Mal;
-* Editar os dados de um gif salvo;
-* Deletar um gif.
+# Bem vindo!
+O projeto é uma pequena plataforma capaz de armazenar e genciar seus GIFs. Não consegui implementar tudo que eu queria pra esse projeto mas ele responde aos pedidos de:
+* Listar/Buscar por GIFs
+* Visualizar detalhes
+* Scroll infinito (eu adicionei um botão de carregamento, espero ser a mesma coisa pra você)
+* Salvar GIFs (ele salva em um pequeno dashboard que você consegue abrir acessando o Meus GIFs no menu)
+* Editar dados de um GIF
+* Deletar um GIF
 
 ## Entrega
-Nós esperamos que o projeto esteja em um container Docker. A entrega do produto deve ser feita através do link de
-um repositório Git que possua um docker-compose para executar o projeto localmente.
+Eu deixei um Dockerfile configurado, basta rodar:
+```
+$ docker build -t vuejs-cookbook/dockerize-vuejs-app .
+```
+```
+$ docker run -it -p 8080:8080 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
+```
 
-Serão valorizados no MVP os seguintes quesitos:
-* Organização do projeto;
-* Boas práticas e convenções;
-* Componentização;
+## Video de Apresentação
+[Clique aqui](https://www.loom.com/share/2f9a85d54ebe42c0b470f3083a104ba4)
